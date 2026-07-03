@@ -1,0 +1,110 @@
+import { useState } from "react";
+import { Bell, ChevronDown, CircleAlert, Menu, Search, X } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+
+import { JobKeyLogo } from "@/components/auth/JobKeyLogo";
+import { cn } from "@/lib/utils";
+import { ROUTES } from "@/lib/routes";
+
+interface NavItem {
+  label: string;
+  to: string;
+  hasChevron?: boolean;
+}
+
+const NAV_ITEMS: NavItem[] = [
+  { label: "Dashboard", to: ROUTES.dashboard },
+  { label: "Vacancies", to: ROUTES.vacancies },
+  { label: "Bids", to: ROUTES.bids },
+  { label: "Offers", to: ROUTES.offers },
+  { label: "Invoice", to: ROUTES.invoices },
+  { label: "Workflow", to: ROUTES.settings, hasChevron: true },
+  { label: "Messages", to: ROUTES.messages },
+];
+
+/** Shared horizontal top navigation for every authenticated Employer screen. */
+export function EmployerTopNav() {
+  const location = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const isActive = (to: string) => location.pathname.startsWith(to);
+
+  return (
+    <header className="relative z-10 flex items-center justify-between px-5 py-4 sm:px-8 lg:px-14">
+      <div className="flex items-center gap-[17px]">
+        <JobKeyLogo size="sm" />
+        <nav className="hidden items-center gap-1.5 lg:flex">
+          {NAV_ITEMS.map((item) => (
+            <Link
+              key={item.label}
+              to={item.to}
+              className={cn(
+                "flex items-center gap-1 rounded-md px-3 py-2.5 text-body-md font-semibold tracking-[0.16px] transition-colors",
+                isActive(item.to) ? "text-grey-900" : "text-grey-600 hover:text-grey-900"
+              )}
+            >
+              {item.label}
+              {item.hasChevron && <ChevronDown className="size-5" />}
+            </Link>
+          ))}
+        </nav>
+      </div>
+
+      <div className="flex items-center gap-2 sm:gap-3">
+        <button
+          type="button"
+          aria-label="Search"
+          className="hidden size-10 place-items-center rounded-lg text-grey-600 shadow-xs transition-colors hover:bg-grey-50 hover:text-grey-900 sm:grid"
+        >
+          <Search className="size-5" />
+        </button>
+        <button
+          type="button"
+          aria-label="Alerts"
+          className="hidden size-10 place-items-center rounded-lg text-grey-600 shadow-xs transition-colors hover:bg-grey-50 hover:text-grey-900 sm:grid"
+        >
+          <CircleAlert className="size-5" />
+        </button>
+        <button
+          type="button"
+          aria-label="Notifications"
+          className="grid size-10 place-items-center rounded-lg text-grey-600 shadow-xs transition-colors hover:bg-grey-50 hover:text-grey-900"
+        >
+          <Bell className="size-5" />
+        </button>
+        <div className="ml-1 size-10 shrink-0 overflow-hidden rounded-full bg-brand-200">
+          <div className="grid size-full place-items-center text-body-sm font-semibold text-brand-700">
+            SC
+          </div>
+        </div>
+        <button
+          type="button"
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          onClick={() => setMenuOpen((v) => !v)}
+          className="grid size-10 place-items-center rounded-lg text-grey-700 shadow-xs hover:bg-grey-50 lg:hidden"
+        >
+          {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+        </button>
+      </div>
+
+      {menuOpen && (
+        <nav className="absolute inset-x-0 top-full z-20 flex flex-col gap-0.5 bg-white p-3 shadow-lg lg:hidden">
+          {NAV_ITEMS.map((item) => (
+            <Link
+              key={item.label}
+              to={item.to}
+              onClick={() => setMenuOpen(false)}
+              className={cn(
+                "flex items-center gap-1 rounded-md px-3 py-2.5 text-body-md font-semibold transition-colors",
+                isActive(item.to) ? "bg-brand-50 text-grey-900" : "text-grey-600 hover:bg-grey-50"
+              )}
+            >
+              {item.label}
+              {item.hasChevron && <ChevronDown className="size-5" />}
+            </Link>
+          ))}
+        </nav>
+      )}
+    </header>
+  );
+}

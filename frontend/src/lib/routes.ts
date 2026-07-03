@@ -1,4 +1,4 @@
-/** Central route table for the auth flow (avoids stringly-typed navigation). */
+/** Central route table (avoids stringly-typed navigation). */
 export const ROUTES = {
   signup: "/signup",
   verifyEmail: "/verify-email",
@@ -12,4 +12,18 @@ export const ROUTES = {
   resetPasswordSuccess: "/reset-password/success",
   resetPasswordExpired: "/reset-password/expired",
   dashboard: "/dashboard",
+  vacancies: "/vacancies",
+  bids: "/bids",
+  offers: "/offers",
+  invoices: "/invoices",
+  messages: "/messages",
+  settings: "/settings",
+  settingsProfile: "/settings/profile",
+  settingsTeam: "/settings/team",
+  settingsBenefits: "/settings/benefits",
+  settingsBilling: "/settings/billing",
+  settingsNotifications: "/settings/notifications",
+  settingsSecurity: "/settings/security",
+  settingsActivityLog: "/settings/activity-log",
+  settingsDataPrivacy: "/settings/data-privacy",
 } as const;

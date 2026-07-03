@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 interface JobKeyLogoProps {
   /** Overall height in px (mark scales with it). Wordmark hidden when false. */
   showWordmark?: boolean;
+  /** "default" for auth screens (36px mark), "sm" for compact nav bars (24px mark). */
+  size?: "default" | "sm";
   className?: string;
 }
 
@@ -13,12 +15,17 @@ interface JobKeyLogoProps {
  * hexagon echoes the honeycomb corner watermarks) + a two-tone "JobKey"
  * wordmark ("Job" dark, "Key" brand blue).
  */
-export function JobKeyLogo({ showWordmark = true, className }: JobKeyLogoProps) {
+export function JobKeyLogo({ showWordmark = true, size = "default", className }: JobKeyLogoProps) {
   return (
     <div className={cn("flex items-center gap-2.5", className)}>
-      <KeyholeMark className="h-9 w-auto" />
+      <KeyholeMark className={size === "sm" ? "h-6 w-auto" : "h-9 w-auto"} />
       {showWordmark && (
-        <span className="font-heading text-[30px] font-bold leading-none tracking-tight">
+        <span
+          className={cn(
+            "font-heading font-bold leading-none tracking-tight",
+            size === "sm" ? "text-xl" : "text-[30px]"
+          )}
+        >
           <span className="text-grey-900">Job</span>
           <span className="text-brand-600">Key</span>
         </span>

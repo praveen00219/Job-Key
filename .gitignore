@@ -9,6 +9,10 @@ JobKey-Flow&Requirements/
 # Dependencies
 node_modules/
 
+ROADMAP.md
+
+.claude
+
 # Build output
 dist/
 dist-ssr/

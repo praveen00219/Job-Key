@@ -56,6 +56,15 @@ const config: Config = {
           500: "#F04438",
           600: "#D92D20",
         },
+        // Stat-card / tag tint accents (Employer dashboard + settings)
+        pink: {
+          50: "#FDF2FA",
+          300: "#FAA7E0",
+        },
+        orange: {
+          50: "#FEF6EE",
+          400: "#F38744",
+        },
       },
       fontFamily: {
         sans: ['"Public Sans"', "system-ui", "-apple-system", "sans-serif"],
