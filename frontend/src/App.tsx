@@ -40,6 +40,7 @@ import ActionRequiredPage from "@/pages/recruiter/ActionRequiredPage";
 import ApplicationUnsuccessfulPage from "@/pages/recruiter/ApplicationUnsuccessfulPage";
 import RecruiterDashboardPage from "@/pages/recruiter/RecruiterDashboardPage";
 import AgencyTeamPage from "@/pages/recruiter/AgencyTeamPage";
+import MarketplacePage from "@/pages/recruiter/MarketplacePage";
 
 export default function App() {
   return (
@@ -99,6 +100,7 @@ export default function App() {
       <Route path={ROUTES.recruiterUnsuccessful} element={<ApplicationUnsuccessfulPage />} />
       <Route path={ROUTES.recruiterDashboard} element={<RecruiterDashboardPage />} />
       <Route path={ROUTES.recruiterTeam} element={<AgencyTeamPage />} />
+      <Route path={ROUTES.recruiterMarketplace} element={<MarketplacePage />} />
 
       {/* Employer: nav destinations not yet built (future phase) */}
       <Route

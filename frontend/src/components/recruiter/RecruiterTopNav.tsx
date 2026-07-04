@@ -8,7 +8,7 @@ import { ROUTES } from "@/lib/routes";
 
 const NAV_ITEMS = [
   { label: "Dashboard", to: ROUTES.recruiterDashboard },
-  { label: "Marketplace", to: "/recruiter/marketplace" },
+  { label: "Marketplace", to: ROUTES.recruiterMarketplace },
   { label: "Candidates", to: "/recruiter/candidates" },
   { label: "Submissions", to: "/recruiter/submissions" },
   { label: "Follow-ups", to: "/recruiter/follow-ups" },

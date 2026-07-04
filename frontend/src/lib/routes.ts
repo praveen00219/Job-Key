@@ -40,4 +40,5 @@ export const ROUTES = {
   recruiterUnsuccessful: "/recruiter/unsuccessful",
   recruiterDashboard: "/recruiter/dashboard",
   recruiterTeam: "/recruiter/team",
+  recruiterMarketplace: "/recruiter/marketplace",
 } as const;
