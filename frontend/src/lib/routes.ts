@@ -13,6 +13,8 @@ export const ROUTES = {
   resetPasswordExpired: "/reset-password/expired",
   dashboard: "/dashboard",
   vacancies: "/vacancies",
+  vacancyNew: "/vacancies/new",
+  vacancyDetail: "/vacancies/:id",
   bids: "/bids",
   offers: "/offers",
   invoices: "/invoices",

@@ -1,4 +1,4 @@
-import { Briefcase, FileText, Hand, MessageSquare, Send } from "lucide-react";
+import { FileText, Hand, MessageSquare, Send } from "lucide-react";
 import { Navigate, Route, Routes } from "react-router-dom";
 
 import { ROUTES } from "@/lib/routes";
@@ -23,6 +23,9 @@ import NotificationsSettingsPage from "@/pages/employer/settings/NotificationsSe
 import SecuritySettingsPage from "@/pages/employer/settings/SecuritySettingsPage";
 import ActivityLogSettingsPage from "@/pages/employer/settings/ActivityLogSettingsPage";
 import DataPrivacySettingsPage from "@/pages/employer/settings/DataPrivacySettingsPage";
+import VacanciesListPage from "@/pages/employer/vacancies/VacanciesListPage";
+import VacancyCreatePage from "@/pages/employer/vacancies/VacancyCreatePage";
+import VacancyDetailPage from "@/pages/employer/vacancies/VacancyDetailPage";
 
 export default function App() {
   return (
@@ -60,18 +63,12 @@ export default function App() {
       <Route path={ROUTES.settingsActivityLog} element={<ActivityLogSettingsPage />} />
       <Route path={ROUTES.settingsDataPrivacy} element={<DataPrivacySettingsPage />} />
 
-      {/* Employer: nav destinations not yet built (Phase 3+) */}
-      <Route
-        path={ROUTES.vacancies}
-        element={
-          <ComingSoonPage
-            title="Vacancies"
-            subtitle="Create and manage your job vacancies"
-            icon={Briefcase}
-            description="The vacancy creation wizard and Kanban pipeline are coming in the next phase."
-          />
-        }
-      />
+      {/* Employer: Vacancies (Phase 3) */}
+      <Route path={ROUTES.vacancies} element={<VacanciesListPage />} />
+      <Route path={ROUTES.vacancyNew} element={<VacancyCreatePage />} />
+      <Route path={ROUTES.vacancyDetail} element={<VacancyDetailPage />} />
+
+      {/* Employer: nav destinations not yet built (Phase 4+) */}
       <Route
         path={ROUTES.bids}
         element={
