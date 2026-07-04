@@ -8,9 +8,10 @@ import type { KanbanCandidate } from "@/lib/mockVacancyData";
 interface CandidateCardProps {
   candidate: KanbanCandidate;
   overlay?: boolean;
+  onOpen?: (candidate: KanbanCandidate) => void;
 }
 
-export function CandidateCard({ candidate, overlay = false }: CandidateCardProps) {
+export function CandidateCard({ candidate, overlay = false, onOpen }: CandidateCardProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: candidate.id,
     disabled: overlay,
@@ -34,8 +35,10 @@ export function CandidateCard({ candidate, overlay = false }: CandidateCardProps
     <div
       ref={overlay ? undefined : setNodeRef}
       style={style}
+      onClick={() => onOpen?.(candidate)}
       className={cn(
         "rounded-lg border border-grey-100 bg-white p-3 shadow-xs",
+        onOpen && "cursor-pointer hover:border-brand-200 hover:shadow-sm",
         overlay && "rotate-2 shadow-lg"
       )}
     >
@@ -58,6 +61,7 @@ export function CandidateCard({ candidate, overlay = false }: CandidateCardProps
           type="button"
           {...attributes}
           {...listeners}
+          onClick={(e) => e.stopPropagation()}
           aria-label="Drag to move"
           className="shrink-0 cursor-grab touch-none text-grey-300 hover:text-grey-500 active:cursor-grabbing"
         >

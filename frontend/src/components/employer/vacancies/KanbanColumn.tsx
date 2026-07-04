@@ -1,10 +1,15 @@
 import { useDroppable } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 
-import type { KanbanColumnData } from "@/lib/mockVacancyData";
+import type { KanbanCandidate, KanbanColumnData } from "@/lib/mockVacancyData";
 import { CandidateCard } from "./CandidateCard";
 
-export function KanbanColumn({ column }: { column: KanbanColumnData }) {
+interface KanbanColumnProps {
+  column: KanbanColumnData;
+  onOpenCandidate: (candidate: KanbanCandidate) => void;
+}
+
+export function KanbanColumn({ column, onOpenCandidate }: KanbanColumnProps) {
   const { setNodeRef } = useDroppable({ id: column.id });
 
   return (
@@ -24,7 +29,7 @@ export function KanbanColumn({ column }: { column: KanbanColumnData }) {
       <div ref={setNodeRef} className="min-h-[80px] flex-1 space-y-2">
         <SortableContext items={column.candidates.map((c) => c.id)} strategy={verticalListSortingStrategy}>
           {column.candidates.map((candidate) => (
-            <CandidateCard key={candidate.id} candidate={candidate} />
+            <CandidateCard key={candidate.id} candidate={candidate} onOpen={onOpenCandidate} />
           ))}
         </SortableContext>
       </div>

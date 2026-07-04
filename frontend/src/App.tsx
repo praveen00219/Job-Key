@@ -1,4 +1,4 @@
-import { FileText, Hand, MessageSquare, Send } from "lucide-react";
+import { MessageSquare } from "lucide-react";
 import { Navigate, Route, Routes } from "react-router-dom";
 
 import { ROUTES } from "@/lib/routes";
@@ -26,6 +26,10 @@ import DataPrivacySettingsPage from "@/pages/employer/settings/DataPrivacySettin
 import VacanciesListPage from "@/pages/employer/vacancies/VacanciesListPage";
 import VacancyCreatePage from "@/pages/employer/vacancies/VacancyCreatePage";
 import VacancyDetailPage from "@/pages/employer/vacancies/VacancyDetailPage";
+import BidsPage from "@/pages/employer/BidsPage";
+import OffersPage from "@/pages/employer/OffersPage";
+import OfferDetailPage from "@/pages/employer/OfferDetailPage";
+import InvoicesPage from "@/pages/employer/InvoicesPage";
 
 export default function App() {
   return (
@@ -68,40 +72,13 @@ export default function App() {
       <Route path={ROUTES.vacancyNew} element={<VacancyCreatePage />} />
       <Route path={ROUTES.vacancyDetail} element={<VacancyDetailPage />} />
 
-      {/* Employer: nav destinations not yet built (Phase 4+) */}
-      <Route
-        path={ROUTES.bids}
-        element={
-          <ComingSoonPage
-            title="Bids"
-            subtitle="Review recruiter submissions and commission bids"
-            icon={Hand}
-            description="Recruiter bid review and acceptance workflow are coming in a later phase."
-          />
-        }
-      />
-      <Route
-        path={ROUTES.offers}
-        element={
-          <ComingSoonPage
-            title="Offers"
-            subtitle="Track and manage candidate offers"
-            icon={Send}
-            description="Offer creation, negotiation, and status tracking are coming in a later phase."
-          />
-        }
-      />
-      <Route
-        path={ROUTES.invoices}
-        element={
-          <ComingSoonPage
-            title="Invoices"
-            subtitle="View and pay recruiter placement invoices"
-            icon={FileText}
-            description="Invoice generation and Stripe payment are coming in a later phase."
-          />
-        }
-      />
+      {/* Employer: Bids, Offers, Invoices (Phase 4) */}
+      <Route path={ROUTES.bids} element={<BidsPage />} />
+      <Route path={ROUTES.offers} element={<OffersPage />} />
+      <Route path="/offers/:id" element={<OfferDetailPage />} />
+      <Route path={ROUTES.invoices} element={<InvoicesPage />} />
+
+      {/* Employer: nav destinations not yet built (Phase 5+) */}
       <Route
         path={ROUTES.messages}
         element={

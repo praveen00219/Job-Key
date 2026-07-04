@@ -13,6 +13,7 @@ import {
 import { arrayMove } from "@dnd-kit/sortable";
 
 import type { KanbanCandidate, KanbanColumnData } from "@/lib/mockVacancyData";
+import { CandidateDetailDrawer } from "@/components/employer/candidates/CandidateDetailDrawer";
 import { CandidateCard } from "./CandidateCard";
 import { KanbanColumn } from "./KanbanColumn";
 
@@ -25,6 +26,7 @@ function findColumnIndex(columns: KanbanColumnData[], id: string) {
 export function KanbanBoard({ initialColumns }: { initialColumns: KanbanColumnData[] }) {
   const [columns, setColumns] = useState(initialColumns);
   const [activeCandidate, setActiveCandidate] = useState<KanbanCandidate | null>(null);
+  const [openCandidate, setOpenCandidate] = useState<KanbanCandidate | null>(null);
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
 
   function handleDragStart(event: DragStartEvent) {
@@ -101,10 +103,14 @@ export function KanbanBoard({ initialColumns }: { initialColumns: KanbanColumnDa
     >
       <div className="flex flex-col gap-4 sm:flex-row sm:overflow-x-auto sm:pb-4">
         {columns.map((column) => (
-          <KanbanColumn key={column.id} column={column} />
+          <KanbanColumn key={column.id} column={column} onOpenCandidate={setOpenCandidate} />
         ))}
       </div>
       <DragOverlay>{activeCandidate && <CandidateCard candidate={activeCandidate} overlay />}</DragOverlay>
+
+      {openCandidate && (
+        <CandidateDetailDrawer candidate={openCandidate} onClose={() => setOpenCandidate(null)} />
+      )}
     </DndContext>
   );
 }
