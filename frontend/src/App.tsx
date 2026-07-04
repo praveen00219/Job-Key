@@ -30,6 +30,16 @@ import BidsPage from "@/pages/employer/BidsPage";
 import OffersPage from "@/pages/employer/OffersPage";
 import OfferDetailPage from "@/pages/employer/OfferDetailPage";
 import InvoicesPage from "@/pages/employer/InvoicesPage";
+import GetStartedPage from "@/pages/recruiter/GetStartedPage";
+import RecruiterSignupPage from "@/pages/recruiter/RecruiterSignupPage";
+import AgencySignupPage from "@/pages/recruiter/AgencySignupPage";
+import RecruiterOnboardingPage from "@/pages/recruiter/RecruiterOnboardingPage";
+import AgencyOnboardingPage from "@/pages/recruiter/AgencyOnboardingPage";
+import UnderReviewPage from "@/pages/recruiter/UnderReviewPage";
+import ActionRequiredPage from "@/pages/recruiter/ActionRequiredPage";
+import ApplicationUnsuccessfulPage from "@/pages/recruiter/ApplicationUnsuccessfulPage";
+import RecruiterDashboardPage from "@/pages/recruiter/RecruiterDashboardPage";
+import AgencyTeamPage from "@/pages/recruiter/AgencyTeamPage";
 
 export default function App() {
   return (
@@ -78,7 +88,19 @@ export default function App() {
       <Route path="/offers/:id" element={<OfferDetailPage />} />
       <Route path={ROUTES.invoices} element={<InvoicesPage />} />
 
-      {/* Employer: nav destinations not yet built (Phase 5+) */}
+      {/* Recruiter / Agency portal (Phase 5) */}
+      <Route path={ROUTES.recruiterGetStarted} element={<GetStartedPage />} />
+      <Route path={ROUTES.recruiterSignup} element={<RecruiterSignupPage />} />
+      <Route path={ROUTES.agencySignup} element={<AgencySignupPage />} />
+      <Route path={ROUTES.recruiterOnboarding} element={<RecruiterOnboardingPage />} />
+      <Route path={ROUTES.agencyOnboarding} element={<AgencyOnboardingPage />} />
+      <Route path={ROUTES.recruiterUnderReview} element={<UnderReviewPage />} />
+      <Route path={ROUTES.recruiterActionRequired} element={<ActionRequiredPage />} />
+      <Route path={ROUTES.recruiterUnsuccessful} element={<ApplicationUnsuccessfulPage />} />
+      <Route path={ROUTES.recruiterDashboard} element={<RecruiterDashboardPage />} />
+      <Route path={ROUTES.recruiterTeam} element={<AgencyTeamPage />} />
+
+      {/* Employer: nav destinations not yet built (future phase) */}
       <Route
         path={ROUTES.messages}
         element={

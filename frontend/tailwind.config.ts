@@ -61,9 +61,19 @@ const config: Config = {
           50: "#FDF2FA",
           300: "#FAA7E0",
         },
+        // Full ramp — also the Recruiter-portal brand accent (distinct from
+        // Employer's blue; the source design uses a warm orange sub-theme
+        // for the Recruiter/Agency side).
         orange: {
+          25: "#FFFAF5",
           50: "#FEF6EE",
+          100: "#FDEAD7",
+          200: "#F9DBAF",
+          300: "#F7B27A",
           400: "#F38744",
+          500: "#EF6C20",
+          600: "#C4551A",
+          700: "#9C4214",
         },
       },
       fontFamily: {

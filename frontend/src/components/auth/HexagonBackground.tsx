@@ -1,15 +1,20 @@
+interface HexagonBackgroundProps {
+  /** Watermark color — grey for Employer auth, warm orange for Recruiter/Agency auth. */
+  colorClassName?: string;
+}
+
 /**
  * Faint honeycomb watermark in the bottom corners of the auth pages
  * (matches the Figma exports). Purely decorative; hidden on small screens.
  */
-export function HexagonBackground() {
+export function HexagonBackground({ colorClassName = "text-grey-200/70" }: HexagonBackgroundProps) {
   return (
     <div
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 hidden overflow-hidden md:block"
     >
-      <HexCluster className="absolute -bottom-10 -left-10 text-grey-200/70" />
-      <HexCluster className="absolute -bottom-10 -right-10 -scale-x-100 text-grey-200/70" />
+      <HexCluster className={`absolute -bottom-10 -left-10 ${colorClassName}`} />
+      <HexCluster className={`absolute -bottom-10 -right-10 -scale-x-100 ${colorClassName}`} />
     </div>
   );
 }

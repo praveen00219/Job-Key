@@ -2,7 +2,7 @@ import type { LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-type Tone = "success" | "warning";
+type Tone = "success" | "warning" | "orange";
 
 interface FeaturedIconProps {
   icon: LucideIcon;
@@ -22,6 +22,11 @@ const toneStyles: Record<Tone, { ring: string; core: string; icon: string }> = {
     ring: "border-warning-200/70",
     core: "border-warning-200 bg-white",
     icon: "text-warning-500",
+  },
+  orange: {
+    ring: "border-orange-200/70",
+    core: "border-orange-200 bg-white",
+    icon: "text-orange-500",
   },
 };
 

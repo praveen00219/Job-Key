@@ -28,4 +28,16 @@ export const ROUTES = {
   settingsSecurity: "/settings/security",
   settingsActivityLog: "/settings/activity-log",
   settingsDataPrivacy: "/settings/data-privacy",
+
+  // Recruiter / Agency portal
+  recruiterGetStarted: "/recruiter/get-started",
+  recruiterSignup: "/recruiter/signup",
+  agencySignup: "/recruiter/agency-signup",
+  recruiterOnboarding: "/recruiter/onboarding",
+  agencyOnboarding: "/recruiter/agency-onboarding",
+  recruiterUnderReview: "/recruiter/under-review",
+  recruiterActionRequired: "/recruiter/action-required",
+  recruiterUnsuccessful: "/recruiter/unsuccessful",
+  recruiterDashboard: "/recruiter/dashboard",
+  recruiterTeam: "/recruiter/team",
 } as const;
