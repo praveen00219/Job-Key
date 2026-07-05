@@ -41,6 +41,11 @@ import ApplicationUnsuccessfulPage from "@/pages/recruiter/ApplicationUnsuccessf
 import RecruiterDashboardPage from "@/pages/recruiter/RecruiterDashboardPage";
 import AgencyTeamPage from "@/pages/recruiter/AgencyTeamPage";
 import MarketplacePage from "@/pages/recruiter/MarketplacePage";
+import CandidatesPage from "@/pages/recruiter/CandidatesPage";
+import CandidateDetailPage from "@/pages/recruiter/CandidateDetailPage";
+import SubmissionsPage from "@/pages/recruiter/SubmissionsPage";
+import SubmitToVacancyPage from "@/pages/recruiter/SubmitToVacancyPage";
+import EarningsPage from "@/pages/recruiter/EarningsPage";
 
 export default function App() {
   return (
@@ -101,6 +106,11 @@ export default function App() {
       <Route path={ROUTES.recruiterDashboard} element={<RecruiterDashboardPage />} />
       <Route path={ROUTES.recruiterTeam} element={<AgencyTeamPage />} />
       <Route path={ROUTES.recruiterMarketplace} element={<MarketplacePage />} />
+      <Route path={ROUTES.recruiterCandidates} element={<CandidatesPage />} />
+      <Route path={ROUTES.recruiterCandidateDetail} element={<CandidateDetailPage />} />
+      <Route path={ROUTES.recruiterSubmissions} element={<SubmissionsPage />} />
+      <Route path={ROUTES.recruiterSubmitToVacancy} element={<SubmitToVacancyPage />} />
+      <Route path={ROUTES.recruiterEarnings} element={<EarningsPage />} />
 
       {/* Employer: nav destinations not yet built (future phase) */}
       <Route

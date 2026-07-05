@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { crmCandidates } from "@/lib/mockCrm";
 import type { MarketplaceVacancy } from "@/lib/mockMarketplace";
 
 interface SubmitCandidateModalProps {
@@ -13,11 +14,12 @@ interface SubmitCandidateModalProps {
 }
 
 /**
- * Focused submission stub — selecting a real candidate from the recruiter's
- * CRM (Phase 7) isn't built yet, so this captures just the commission bid +
- * consent, matching PRD Flow R4's core fields.
+ * Quick single-candidate submission (PRD Flow R4): pick a candidate from the
+ * CRM, set the commission bid, confirm consent. For multi-candidate
+ * submission use the full Submit-to-Vacancy wizard launched from the CRM.
  */
 export function SubmitCandidateModal({ vacancy, onClose }: SubmitCandidateModalProps) {
+  const [candidateId, setCandidateId] = useState("");
   const [bid, setBid] = useState("15");
   const [consent, setConsent] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -56,11 +58,17 @@ export function SubmitCandidateModal({ vacancy, onClose }: SubmitCandidateModalP
               <Label htmlFor="candidateSelect">Candidate</Label>
               <select
                 id="candidateSelect"
+                value={candidateId}
+                onChange={(e) => setCandidateId(e.target.value)}
                 className="h-11 w-full rounded-md border border-grey-200 bg-white px-3.5 text-body-md text-grey-900 shadow-xs"
               >
-                <option>Select from your CRM…</option>
+                <option value="">Select from your CRM…</option>
+                {crmCandidates.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name} — {c.currentRole} at {c.currentCompany} ({c.matchPct}% match)
+                  </option>
+                ))}
               </select>
-              <p className="text-body-xs text-grey-400">Full CRM candidate picker is coming in a later phase.</p>
             </div>
 
             <div className="mt-4 space-y-1.5">
@@ -80,7 +88,7 @@ export function SubmitCandidateModal({ vacancy, onClose }: SubmitCandidateModalP
 
             <Button
               className="mt-5 w-full bg-grey-950 hover:bg-grey-800"
-              disabled={!consent}
+              disabled={!consent || !candidateId}
               onClick={() => setSubmitted(true)}
             >
               Submit

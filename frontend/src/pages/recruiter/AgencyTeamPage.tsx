@@ -7,6 +7,7 @@ import { ComingSoonCard } from "@/components/employer/ComingSoonCard";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { agencyTeamMembers, pendingInvitations, teamPerformanceStats, topPerformers } from "@/lib/mockAgencyTeam";
+import { agencyFinancialStats, teamEarningsBreakdown } from "@/lib/mockEarnings";
 
 const TABS = [
   { id: "overview", label: "Overview", icon: LayoutGrid },
@@ -155,6 +156,61 @@ export default function AgencyTeamPage() {
                           Remove
                         </button>
                       </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      ) : tab === "financials" ? (
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-heading-sm font-semibold text-grey-950">Financials</h2>
+            <Button variant="secondary" size="sm">
+              Commission Settings
+            </Button>
+          </div>
+          <div className="flex flex-wrap gap-4">
+            {agencyFinancialStats.map((s) => (
+              <div key={s.label} className="min-w-[180px] flex-1 rounded-lg bg-white p-4 shadow-xs">
+                <p className="text-heading-md font-semibold text-grey-950">{s.value}</p>
+                <p className="mt-1 text-body-xs text-grey-500">{s.label}</p>
+              </div>
+            ))}
+          </div>
+          <section className="rounded-lg bg-white p-5 shadow-xs">
+            <h3 className="text-body-md font-semibold text-grey-950">Team Earnings Breakdown</h3>
+            <div className="mt-4 overflow-x-auto">
+              <table className="w-full min-w-[720px] border-collapse">
+                <thead>
+                  <tr className="border-b border-grey-200 text-left">
+                    {["Member", "Role", "Placements", "Gross Revenue", "Commission Rate", "Earnings"].map((col) => (
+                      <th key={col} className="px-3 py-2 text-body-xs font-medium uppercase tracking-wide text-grey-500">
+                        {col}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {teamEarningsBreakdown.map((row) => (
+                    <tr key={row.id} className="border-b border-grey-100 last:border-0">
+                      <td className="px-3 py-3">
+                        <div className="flex items-center gap-2.5">
+                          <span className={cn("grid size-8 shrink-0 place-items-center rounded-full text-body-xs font-semibold text-grey-700", row.avatarColor)}>
+                            {row.member
+                              .split(" ")
+                              .map((n) => n[0])
+                              .join("")}
+                          </span>
+                          <span className="text-body-sm font-medium text-grey-900">{row.member}</span>
+                        </div>
+                      </td>
+                      <td className="px-3 py-3 text-body-sm text-grey-700">{row.role}</td>
+                      <td className="px-3 py-3 text-body-sm text-grey-700">{String(row.placements).padStart(2, "0")}</td>
+                      <td className="px-3 py-3 text-body-sm text-grey-700">{row.grossRevenue}</td>
+                      <td className="px-3 py-3 text-body-sm text-grey-700">{row.commissionRate}</td>
+                      <td className="px-3 py-3 text-body-sm font-medium text-grey-900">{row.earnings}</td>
                     </tr>
                   ))}
                 </tbody>

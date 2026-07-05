@@ -9,10 +9,10 @@ import { ROUTES } from "@/lib/routes";
 const NAV_ITEMS = [
   { label: "Dashboard", to: ROUTES.recruiterDashboard },
   { label: "Marketplace", to: ROUTES.recruiterMarketplace },
-  { label: "Candidates", to: "/recruiter/candidates" },
-  { label: "Submissions", to: "/recruiter/submissions" },
+  { label: "Candidates", to: ROUTES.recruiterCandidates },
+  { label: "Submissions", to: ROUTES.recruiterSubmissions },
   { label: "Follow-ups", to: "/recruiter/follow-ups" },
-  { label: "Earnings", to: "/recruiter/earnings" },
+  { label: "Earnings", to: ROUTES.recruiterEarnings },
 ];
 
 /** Shared horizontal top navigation for every authenticated Recruiter/Agency screen. */

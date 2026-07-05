@@ -41,4 +41,9 @@ export const ROUTES = {
   recruiterDashboard: "/recruiter/dashboard",
   recruiterTeam: "/recruiter/team",
   recruiterMarketplace: "/recruiter/marketplace",
+  recruiterCandidates: "/recruiter/candidates",
+  recruiterCandidateDetail: "/recruiter/candidates/:id",
+  recruiterSubmissions: "/recruiter/submissions",
+  recruiterSubmitToVacancy: "/recruiter/submit-to-vacancy",
+  recruiterEarnings: "/recruiter/earnings",
 } as const;
