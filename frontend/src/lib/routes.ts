@@ -46,4 +46,11 @@ export const ROUTES = {
   recruiterSubmissions: "/recruiter/submissions",
   recruiterSubmitToVacancy: "/recruiter/submit-to-vacancy",
   recruiterEarnings: "/recruiter/earnings",
+
+  // Candidate portal
+  publicJob: "/jobs/:slug",
+  publicJobApply: "/jobs/:slug/apply",
+  candidateLogin: "/candidate/login",
+  candidateApplications: "/candidate/applications",
+  candidateOffer: "/candidate/offers/:id",
 } as const;

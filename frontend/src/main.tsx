@@ -15,7 +15,8 @@ import App from "./App";
 import { AuthProvider } from "./context/AuthContext";
 import "./index.css";
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+const container = document.getElementById("root")!;
+const app = (
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
@@ -24,3 +25,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     </BrowserRouter>
   </React.StrictMode>
 );
+
+// Statically prerendered pages (public job routes) arrive with markup in the
+// root — hydrate those; everything else client-renders as a normal SPA.
+if (container.hasChildNodes()) {
+  ReactDOM.hydrateRoot(container, app);
+} else {
+  ReactDOM.createRoot(container).render(app);
+}

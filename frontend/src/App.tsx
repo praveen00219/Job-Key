@@ -46,6 +46,11 @@ import CandidateDetailPage from "@/pages/recruiter/CandidateDetailPage";
 import SubmissionsPage from "@/pages/recruiter/SubmissionsPage";
 import SubmitToVacancyPage from "@/pages/recruiter/SubmitToVacancyPage";
 import EarningsPage from "@/pages/recruiter/EarningsPage";
+import PublicJobPage from "@/pages/candidate/PublicJobPage";
+import ApplyPage from "@/pages/candidate/ApplyPage";
+import CandidateLoginPage from "@/pages/candidate/CandidateLoginPage";
+import CandidateApplicationsPage from "@/pages/candidate/CandidateApplicationsPage";
+import OfferResponsePage from "@/pages/candidate/OfferResponsePage";
 
 export default function App() {
   return (
@@ -111,6 +116,13 @@ export default function App() {
       <Route path={ROUTES.recruiterSubmissions} element={<SubmissionsPage />} />
       <Route path={ROUTES.recruiterSubmitToVacancy} element={<SubmitToVacancyPage />} />
       <Route path={ROUTES.recruiterEarnings} element={<EarningsPage />} />
+
+      {/* Candidate portal (Phase 9) */}
+      <Route path={ROUTES.publicJob} element={<PublicJobPage />} />
+      <Route path={ROUTES.publicJobApply} element={<ApplyPage />} />
+      <Route path={ROUTES.candidateLogin} element={<CandidateLoginPage />} />
+      <Route path={ROUTES.candidateApplications} element={<CandidateApplicationsPage />} />
+      <Route path={ROUTES.candidateOffer} element={<OfferResponsePage />} />
 
       {/* Employer: nav destinations not yet built (future phase) */}
       <Route
