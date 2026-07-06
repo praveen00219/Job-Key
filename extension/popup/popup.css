@@ -1,0 +1,190 @@
+/* JobKey extension popup — orange recruiter theme, hand-rolled tokens
+   mirroring the web app (grey-950 #0F0F0F, orange-500 #EF6C20, etc.). */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 360px;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-size: 13px;
+  color: #141414;
+  background: #fafafa;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: linear-gradient(to bottom, #fdead7, #fef6ee);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wordmark {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+}
+
+.wordmark em {
+  font-style: normal;
+  color: #ef6c20;
+}
+
+.signed-in {
+  font-size: 11px;
+  color: #737373;
+}
+
+.section {
+  padding: 12px 16px 4px;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.section-head h2 {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: #525252;
+}
+
+.hint {
+  font-size: 11px;
+  color: #a3a3a3;
+}
+
+.link-btn {
+  border: 0;
+  background: none;
+  font-size: 11px;
+  font-weight: 600;
+  color: #c4551a;
+  cursor: pointer;
+}
+
+.link-btn:hover {
+  text-decoration: underline;
+}
+
+.notifications,
+.watchlist {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.notification {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 8px 10px;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+}
+
+.notification.unread {
+  border-left: 3px solid #ef6c20;
+}
+
+.notification .dot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  margin-top: 4px;
+  border-radius: 50%;
+  background: #ef6c20;
+}
+
+.notification.read .dot {
+  background: #d9d9d9;
+}
+
+.notification .text {
+  flex: 1;
+}
+
+.notification .title {
+  font-weight: 600;
+}
+
+.notification .time {
+  font-size: 11px;
+  color: #a3a3a3;
+}
+
+.vacancy {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 10px;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+}
+
+.vacancy .info .title {
+  font-weight: 600;
+}
+
+.vacancy .info .meta {
+  font-size: 11px;
+  color: #737373;
+}
+
+.match {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* PRD color coding: green 80%+, yellow 50-79%, gray <50% */
+.match.high {
+  background: #ecfdf3;
+  color: #079455;
+}
+
+.match.mid {
+  background: #fffaeb;
+  color: #b54708;
+}
+
+.match.low {
+  background: #f5f5f5;
+  color: #737373;
+}
+
+.footer {
+  padding: 10px 16px 14px;
+  text-align: center;
+}
+
+.footer a {
+  font-size: 12px;
+  font-weight: 700;
+  color: #c4551a;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}

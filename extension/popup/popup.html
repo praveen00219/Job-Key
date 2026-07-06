@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="popup.css" />
+    <title>JobKey</title>
+  </head>
+  <body>
+    <header class="header">
+      <div class="brand">
+        <img src="../icons/icon48.png" alt="" width="22" height="22" />
+        <span class="wordmark">Job<em>Key</em></span>
+      </div>
+      <span class="signed-in" id="signedIn">sarah@techrecruit.com</span>
+    </header>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Notifications</h2>
+        <button id="markAllRead" class="link-btn" type="button">Mark all read</button>
+      </div>
+      <ul id="notificationList" class="notifications"></ul>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Your Watchlist</h2>
+        <span class="hint">Match to current profile</span>
+      </div>
+      <ul id="watchlist" class="watchlist"></ul>
+    </section>
+
+    <footer class="footer">
+      <a href="http://localhost:5173/recruiter/dashboard" target="_blank" rel="noreferrer">Open JobKey →</a>
+    </footer>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

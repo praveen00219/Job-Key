@@ -1,0 +1,231 @@
+/* JobKey LinkedIn overlay. Every class is jk- prefixed to avoid colliding
+   with LinkedIn's own styles. */
+.jk-fab-stack {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 2147483000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+.jk-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(16, 24, 40, 0.18);
+}
+
+.jk-btn-primary {
+  background: #ef6c20;
+  color: #fff;
+}
+
+.jk-btn-primary:hover {
+  background: #c4551a;
+}
+
+.jk-btn-secondary {
+  background: #fff;
+  color: #141414;
+  border: 1px solid #e5e5e5;
+}
+
+.jk-btn-secondary:hover {
+  background: #fafafa;
+}
+
+.jk-btn-saved {
+  background: #ecfdf3;
+  color: #079455;
+  border: 1px solid #a6f4c5;
+}
+
+.jk-badge-duplicate {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid #fedf89;
+  border-radius: 999px;
+  background: #fffaeb;
+  color: #b54708;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(16, 24, 40, 0.18);
+}
+
+.jk-hex {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.jk-panel {
+  position: fixed;
+  right: 24px;
+  bottom: 88px;
+  z-index: 2147483001;
+  width: 340px;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(16, 24, 40, 0.22);
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-size: 13px;
+  color: #141414;
+  overflow: hidden;
+}
+
+.jk-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #fdead7;
+  font-weight: 700;
+}
+
+.jk-panel-close {
+  border: 0;
+  background: none;
+  font-size: 16px;
+  line-height: 1;
+  color: #737373;
+  cursor: pointer;
+}
+
+.jk-panel-body {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.jk-field label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #424242;
+}
+
+.jk-field input,
+.jk-field select,
+.jk-field textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: inherit;
+  background: #fafafa;
+  color: #141414;
+  box-sizing: border-box;
+}
+
+.jk-field input:focus,
+.jk-field select:focus,
+.jk-field textarea:focus {
+  outline: 2px solid rgba(239, 108, 32, 0.35);
+  border-color: #f7b27a;
+}
+
+.jk-earnings {
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #fef6ee;
+  color: #9c4214;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.jk-consent {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  font-size: 12px;
+  color: #424242;
+}
+
+.jk-consent input {
+  margin-top: 2px;
+}
+
+.jk-submit {
+  width: 100%;
+  padding: 10px;
+  border: 0;
+  border-radius: 8px;
+  background: #0f0f0f;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.jk-submit:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.jk-record-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  background: #fafafa;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.jk-record-row .jk-status {
+  font-weight: 700;
+  color: #1570ef;
+}
+
+.jk-toast {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 2147483002;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  border-radius: 10px;
+  background: #0f0f0f;
+  color: #fff;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 12px 32px rgba(16, 24, 40, 0.3);
+  animation: jk-toast-in 0.2s ease-out;
+}
+
+.jk-toast .jk-check {
+  color: #17b26a;
+  font-weight: 900;
+}
+
+@keyframes jk-toast-in {
+  from {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
