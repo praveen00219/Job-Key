@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Briefcase, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -5,7 +6,8 @@ import { EmployerLayout } from "@/components/employer/EmployerLayout";
 import { EmployerHero, PageBannerTitle } from "@/components/employer/EmployerHero";
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/lib/routes";
-import { vacancyList, type VacancyStatus } from "@/lib/mockVacancyData";
+import { vacancyList as mockVacancyList, type VacancyListItem, type VacancyStatus } from "@/lib/mockVacancyData";
+import { apiFetch, getToken } from "@/lib/api";
 
 const STATUS_STYLES: Record<VacancyStatus, string> = {
   Active: "bg-success-50 text-success-600",
@@ -14,8 +16,50 @@ const STATUS_STYLES: Record<VacancyStatus, string> = {
   Closed: "bg-danger-50 text-danger-600",
 };
 
+interface ApiVacancy {
+  slug: string;
+  title: string;
+  department: string;
+  status: string;
+  applications_count: number;
+  location: string;
+  posted_at: string;
+}
+
+function fromApi(v: ApiVacancy): VacancyListItem {
+  return {
+    id: v.slug,
+    title: v.title,
+    department: v.department || "—",
+    // Backend statuses match the frontend's set except it also allows "Filled"
+    status: (["Active", "Paused", "Draft", "Closed"].includes(v.status) ? v.status : "Active") as VacancyStatus,
+    applications: v.applications_count,
+    location: v.location || "—",
+    postedDate: new Date(v.posted_at).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }),
+  };
+}
+
 export default function VacanciesListPage() {
   const navigate = useNavigate();
+
+  // Live vacancies come from the real backend (Phase 11) when a session
+  // exists; otherwise this falls back to the mock catalogue unchanged so
+  // the page still works for anonymous/dev browsing.
+  const [vacancyList, setVacancyList] = useState<VacancyListItem[]>(mockVacancyList);
+  const [source, setSource] = useState<"live" | "mock">("mock");
+
+  useEffect(() => {
+    if (!getToken()) return;
+    apiFetch<ApiVacancy[]>("/vacancies")
+      .then((data) => {
+        setVacancyList(data.map(fromApi));
+        setSource("live");
+      })
+      .catch(() => {
+        // Session expired or request failed — keep showing mock data.
+      });
+  }, []);
+
   const createButton = (
     <Button size="md" className="bg-grey-950 hover:bg-grey-800" onClick={() => navigate(ROUTES.vacancyNew)}>
       <Plus className="size-[18px]" />
@@ -35,6 +79,12 @@ export default function VacanciesListPage() {
         </EmployerHero>
       }
     >
+      {source === "live" && (
+        <p className="mb-3 flex items-center gap-1.5 text-body-xs font-medium text-success-600">
+          <span className="size-1.5 rounded-full bg-success-600" />
+          Live from your JobKey account
+        </p>
+      )}
       {vacancyList.length === 0 ? (
         <div className="flex flex-col items-center justify-center gap-4 rounded-lg bg-white p-16 text-center">
           <span className="grid size-16 place-items-center rounded-full bg-brand-50">
@@ -64,6 +114,9 @@ export default function VacanciesListPage() {
                 <tr
                   key={v.id}
                   className="cursor-pointer border-b border-grey-100 last:border-0 hover:bg-grey-50"
+                  // VacancyDetailPage still reads from mock data (unwired until
+                  // a later phase); it redirects back here for unknown ids, so
+                  // this is safe for both mock and live rows.
                   onClick={() => navigate(`/vacancies/${v.id}`)}
                 >
                   <td className="px-5 py-4">

@@ -8,6 +8,10 @@ JobKey-Flow&Requirements/
 
 # Dependencies
 node_modules/
+backend/venv/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/*.db
 
 ROADMAP.md
 .claude
