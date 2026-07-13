@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthLayout } from "@/components/auth/AuthLayout";
 import { AuthHeading } from "@/components/auth/AuthHeading";
 import { PasswordInput } from "@/components/auth/PasswordInput";
+import { ROLE_LANDING } from "@/components/auth/RequireAuth";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -17,7 +18,7 @@ import { loginSchema, type LoginValues } from "@/lib/validation";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, setPendingEmail, sessionExpired } = useAuth();
   const [authError, setAuthError] = useState<string | null>(null);
 
   const {
@@ -33,10 +34,13 @@ export default function LoginPage() {
 
   const onSubmit = async (values: LoginValues) => {
     setAuthError(null);
-    const result = await login(values.email, values.password);
-    if (result === "success") navigate(ROUTES.dashboard);
-    else if (result === "locked") navigate(ROUTES.accountLocked);
-    else setAuthError("Invalid email or password");
+    const { status, role } = await login(values.email, values.password);
+    if (status === "success" && role) navigate(ROLE_LANDING[role]);
+    else if (status === "locked") navigate(ROUTES.accountLocked);
+    else if (status === "unverified") {
+      setPendingEmail(values.email);
+      navigate(ROUTES.verifyEmail);
+    } else setAuthError("Invalid email or password");
   };
 
   const emailInvalid = !!errors.email || !!authError;
@@ -44,6 +48,12 @@ export default function LoginPage() {
   return (
     <AuthLayout>
       <AuthHeading title="Welcome Back to JobKey" subtitle="Log in to manage your recruitment needs" />
+
+      {sessionExpired && (
+        <p className="mt-6 rounded-md bg-warning-50 px-4 py-3 text-body-sm text-warning-700">
+          Your session expired — please sign in again.
+        </p>
+      )}
 
       <form onSubmit={handleSubmit(onSubmit)} className="mt-9 space-y-5" noValidate>
         <div className="space-y-1.5">

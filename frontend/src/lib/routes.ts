@@ -17,6 +17,7 @@ export const ROUTES = {
   vacancyDetail: "/vacancies/:id",
   bids: "/bids",
   offers: "/offers",
+  offerDetail: "/offers/:id",
   invoices: "/invoices",
   messages: "/messages",
   settings: "/settings",

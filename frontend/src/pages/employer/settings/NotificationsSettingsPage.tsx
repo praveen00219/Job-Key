@@ -32,8 +32,6 @@ export default function NotificationsSettingsPage() {
     );
   };
 
-  let lastCategory = "";
-
   return (
     <SettingsPageShell title="Notifications Preferences" subtitle="Choose how you want to be notified">
       <div className="rounded-lg bg-white p-5">
@@ -109,8 +107,7 @@ export default function NotificationsSettingsPage() {
             </thead>
             <tbody>
               {rows.map((row, i) => {
-                const showCategory = row.category !== lastCategory;
-                lastCategory = row.category;
+                const showCategory = i === 0 || rows[i - 1].category !== row.category;
                 return (
                   <tr key={row.label} className="border-t border-grey-200">
                     <td className="px-6 py-4">

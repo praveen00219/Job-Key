@@ -50,13 +50,14 @@ export default function VacanciesListPage() {
 
   useEffect(() => {
     if (!getToken()) return;
-    apiFetch<ApiVacancy[]>("/vacancies")
+    apiFetch<{ items: ApiVacancy[] }>("/vacancies")
       .then((data) => {
-        setVacancyList(data.map(fromApi));
+        setVacancyList(data.items.map(fromApi));
         setSource("live");
       })
       .catch(() => {
         // Session expired or request failed — keep showing mock data.
+        // (This fallback is removed in module A3 per the hard-cut policy.)
       });
   }, []);
 

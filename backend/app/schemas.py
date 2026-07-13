@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Literal
 
 from pydantic import BaseModel, EmailStr, Field
 
@@ -9,7 +10,8 @@ from pydantic import BaseModel, EmailStr, Field
 class RegisterIn(BaseModel):
     email: EmailStr
     password: str = Field(min_length=8)
-    role: str = "employer"
+    # Self-registration never grants admin (admin accounts are created by A9 tooling).
+    role: Literal["employer", "recruiter", "candidate"] = "employer"
 
 
 class LoginIn(BaseModel):
@@ -19,6 +21,7 @@ class LoginIn(BaseModel):
 
 class TokenOut(BaseModel):
     access_token: str
+    refresh_token: str
     token_type: str = "bearer"
     role: str
     email: str
@@ -33,12 +36,29 @@ class UserOut(BaseModel):
     model_config = {"from_attributes": True}
 
 
+class VerifyEmailIn(BaseModel):
+    token: str
+
+
+class ResendVerificationIn(BaseModel):
+    email: EmailStr
+
+
+class RefreshIn(BaseModel):
+    refresh_token: str
+
+
 class ForgotPasswordIn(BaseModel):
     email: EmailStr
 
 
 class ResetPasswordIn(BaseModel):
-    email: EmailStr
+    token: str
+    new_password: str = Field(min_length=8)
+
+
+class ChangePasswordIn(BaseModel):
+    current_password: str
     new_password: str = Field(min_length=8)
 
 

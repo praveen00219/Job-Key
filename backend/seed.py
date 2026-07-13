@@ -3,11 +3,15 @@ mirroring the frontend's mock data so real API responses feel familiar.
 Run: venv/Scripts/python.exe seed.py
 """
 
-from app.database import Base, SessionLocal, engine
+from alembic import command
+from alembic.config import Config
+
+from app.database import SessionLocal
 from app.models import Agency, Candidate, Company, User, Vacancy
 from app.security import hash_password
 
-Base.metadata.create_all(bind=engine)
+# Schema comes from migrations only (A1): bring the DB to head before seeding.
+command.upgrade(Config("alembic.ini"), "head")
 db = SessionLocal()
 
 if db.query(User).count() > 0:

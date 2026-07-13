@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from ..database import get_db
 from ..deps import require_role
 from ..models import Candidate, Submission, User, Vacancy, WatchlistItem
+from ..pagination import Page, PageParams, paginate
 from ..routers.agencies import get_or_404
 from ..schemas import SubmissionCreate, SubmissionOut, SubmissionStatusUpdate
 from ..security import get_current_user
@@ -19,13 +20,16 @@ def _to_out(s: Submission) -> SubmissionOut:
     return out
 
 
-@router.get("/api/submissions", response_model=list[SubmissionOut])
-def list_submissions(current: User = Depends(require_role("recruiter")), db: Session = Depends(get_db)):
+@router.get("/api/submissions", response_model=Page[SubmissionOut])
+def list_submissions(
+    params: PageParams = Depends(),
+    current: User = Depends(require_role("recruiter")),
+    db: Session = Depends(get_db),
+):
     agency = get_or_404(db, current)
-    submissions = db.scalars(
-        select(Submission).where(Submission.agency_id == agency.id).order_by(Submission.submitted_at.desc())
-    ).all()
-    return [_to_out(s) for s in submissions]
+    stmt = select(Submission).where(Submission.agency_id == agency.id).order_by(Submission.submitted_at.desc())
+    rows, total = paginate(db, stmt, params)
+    return Page(items=[_to_out(s) for s in rows], total=total, page=params.page, size=params.size)
 
 
 @router.post("/api/submissions", response_model=SubmissionOut, status_code=status.HTTP_201_CREATED)

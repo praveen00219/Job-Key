@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { Send } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Loader2, Send } from "lucide-react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { AuthLayout } from "@/components/auth/AuthLayout";
 import { NextStepsCard } from "@/components/auth/NextStepsCard";
@@ -10,11 +10,34 @@ import { ROUTES } from "@/lib/routes";
 
 export default function VerifyEmailPage() {
   const navigate = useNavigate();
-  const { pendingEmail, resendVerification } = useAuth();
-  const email = pendingEmail ?? "sara.c@innovateinc.com";
+  const [searchParams] = useSearchParams();
+  const { pendingEmail, resendVerification, verifyEmail } = useAuth();
+  const email = pendingEmail ?? "your email address";
 
   const [resending, setResending] = useState(false);
   const [sent, setSent] = useState(false);
+
+  // Arriving via the emailed link (/verify-email?token=…): verify immediately.
+  const token = searchParams.get("token");
+  const verifyAttempted = useRef(false); // StrictMode double-invoke guard
+  useEffect(() => {
+    if (!token || verifyAttempted.current) return;
+    verifyAttempted.current = true;
+    verifyEmail(token).then((ok) =>
+      navigate(ok ? ROUTES.verifyEmailSuccess : ROUTES.verifyEmailExpired, { replace: true })
+    );
+  }, [token, verifyEmail, navigate]);
+
+  if (token) {
+    return (
+      <AuthLayout>
+        <div className="flex flex-col items-center gap-3 py-16 text-center">
+          <Loader2 className="size-7 animate-spin text-brand-500" />
+          <p className="text-body-md text-grey-600">Verifying your email…</p>
+        </div>
+      </AuthLayout>
+    );
+  }
 
   const handleResend = async () => {
     setResending(true);

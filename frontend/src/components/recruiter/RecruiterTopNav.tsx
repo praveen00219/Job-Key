@@ -11,7 +11,8 @@ const NAV_ITEMS = [
   { label: "Marketplace", to: ROUTES.recruiterMarketplace },
   { label: "Candidates", to: ROUTES.recruiterCandidates },
   { label: "Submissions", to: ROUTES.recruiterSubmissions },
-  { label: "Follow-ups", to: "/recruiter/follow-ups" },
+  // "Follow-ups" removed (audit F1): the Figma frame with that name is the
+  // Earnings page; no follow-ups screen or PRD flow exists.
   { label: "Earnings", to: ROUTES.recruiterEarnings },
 ];
 

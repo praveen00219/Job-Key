@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from ..database import get_db
 from ..deps import require_role
 from ..models import Application, Company, ScreeningQuestion, User, Vacancy
+from ..pagination import Page, PageParams, paginate
 from ..schemas import ScreeningQuestionOut, VacancyCreate, VacancyOut, VacancyUpdate
 from ..security import get_current_user
 
@@ -31,10 +32,11 @@ def _to_out(v: Vacancy, db: Session) -> VacancyOut:
     return out
 
 
-@router.get("", response_model=list[VacancyOut])
+@router.get("", response_model=Page[VacancyOut])
 def list_vacancies(
     marketplace: bool = False,
     status_filter: str | None = None,
+    params: PageParams = Depends(),
     db: Session = Depends(get_db),
     current: User = Depends(get_current_user),
 ):
@@ -47,12 +49,12 @@ def list_vacancies(
     else:
         company = db.scalar(select(Company).where(Company.owner_id == current.id))
         if company is None:
-            return []
+            return Page(items=[], total=0, page=params.page, size=params.size)
         stmt = stmt.where(Vacancy.company_id == company.id)
     if status_filter:
         stmt = stmt.where(Vacancy.status == status_filter)
-    vacancies = db.scalars(stmt.order_by(Vacancy.posted_at.desc())).all()
-    return [_to_out(v, db) for v in vacancies]
+    rows, total = paginate(db, stmt.order_by(Vacancy.posted_at.desc()), params)
+    return Page(items=[_to_out(v, db) for v in rows], total=total, page=params.page, size=params.size)
 
 
 @router.get("/{vacancy_id}", response_model=VacancyOut)

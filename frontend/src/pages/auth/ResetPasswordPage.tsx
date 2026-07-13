@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
 
 import { AuthLayout } from "@/components/auth/AuthLayout";
 import { AuthHeading } from "@/components/auth/AuthHeading";
@@ -15,7 +15,12 @@ import { resetPasswordSchema, type ResetPasswordValues } from "@/lib/validation"
 
 export default function ResetPasswordPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { resetPassword } = useAuth();
+
+  // The reset link is /reset-password?token=… — without a token the reset
+  // cannot succeed (A1 tokened flow), so treat it as an expired link.
+  const token = searchParams.get("token");
 
   const {
     register,
@@ -30,9 +35,15 @@ export default function ResetPasswordPage() {
 
   const password = watch("password") ?? "";
 
+  if (!token) return <Navigate to={ROUTES.resetPasswordExpired} replace />;
+
   const onSubmit = async (values: ResetPasswordValues) => {
-    await resetPassword(values.password);
-    navigate(ROUTES.resetPasswordSuccess);
+    try {
+      await resetPassword(token, values.password);
+      navigate(ROUTES.resetPasswordSuccess);
+    } catch {
+      navigate(ROUTES.resetPasswordExpired);
+    }
   };
 
   return (

@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 from ..database import get_db
 from ..models import Notification, User
+from ..pagination import Page, PageParams, paginate
 from ..security import get_current_user
 
 router = APIRouter(prefix="/api/notifications", tags=["notifications"])
@@ -19,11 +20,15 @@ class NotificationOut(BaseModel):
     model_config = {"from_attributes": True}
 
 
-@router.get("", response_model=list[NotificationOut])
-def list_notifications(current: User = Depends(get_current_user), db: Session = Depends(get_db)):
-    return db.scalars(
-        select(Notification).where(Notification.user_id == current.id).order_by(Notification.created_at.desc())
-    ).all()
+@router.get("", response_model=Page[NotificationOut])
+def list_notifications(
+    params: PageParams = Depends(),
+    current: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    stmt = select(Notification).where(Notification.user_id == current.id).order_by(Notification.created_at.desc())
+    rows, total = paginate(db, stmt, params)
+    return Page(items=rows, total=total, page=params.page, size=params.size)
 
 
 @router.post("/mark-all-read", status_code=204)

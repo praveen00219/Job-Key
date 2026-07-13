@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from ..database import get_db
 from ..deps import require_role
 from ..models import Agency, Candidate, User
+from ..pagination import Page, PageParams, paginate
 from ..routers.agencies import get_or_404
 from ..schemas import CandidateCreate, CandidateOut
 from ..security import get_current_user
@@ -12,9 +13,10 @@ from ..security import get_current_user
 router = APIRouter(prefix="/api/candidates", tags=["candidates"])
 
 
-@router.get("", response_model=list[CandidateOut])
+@router.get("", response_model=Page[CandidateOut])
 def list_candidates(
     q: str | None = None,
+    params: PageParams = Depends(),
     current: User = Depends(require_role("recruiter")),
     db: Session = Depends(get_db),
 ):
@@ -22,7 +24,8 @@ def list_candidates(
     stmt = select(Candidate).where(Candidate.agency_id == agency.id)
     if q:
         stmt = stmt.where(Candidate.name.ilike(f"%{q}%"))
-    return db.scalars(stmt.order_by(Candidate.created_at.desc())).all()
+    rows, total = paginate(db, stmt.order_by(Candidate.created_at.desc()), params)
+    return Page(items=rows, total=total, page=params.page, size=params.size)
 
 
 @router.get("/{candidate_id}", response_model=CandidateOut)

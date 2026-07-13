@@ -1,8 +1,10 @@
 import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router-dom/server";
+import { QueryClientProvider } from "@tanstack/react-query";
 
 import App from "./App";
 import { AuthProvider } from "./context/AuthContext";
+import { queryClient } from "./lib/queryClient";
 import { publicJobs } from "./lib/mockPublicJobs";
 
 /**
@@ -13,9 +15,11 @@ import { publicJobs } from "./lib/mockPublicJobs";
 export function render(url: string): string {
   return renderToString(
     <StaticRouter location={url}>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </QueryClientProvider>
     </StaticRouter>
   );
 }

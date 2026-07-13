@@ -18,7 +18,9 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Bids", to: ROUTES.bids },
   { label: "Offers", to: ROUTES.offers },
   { label: "Invoice", to: ROUTES.invoices },
-  { label: "Workflow", to: ROUTES.settings, hasChevron: true },
+  // Labeled "Settings" (audit F2): the design's "Workflow ▾" item had no
+  // workflow destination — this entry has always landed on Settings.
+  { label: "Settings", to: ROUTES.settings, hasChevron: true },
   { label: "Messages", to: ROUTES.messages },
 ];
 

@@ -1,27 +1,52 @@
 from datetime import datetime
 
-from sqlalchemy import Boolean, DateTime, Float, ForeignKey, Integer, String, Text
+from sqlalchemy import Boolean, CheckConstraint, DateTime, Float, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .database import Base
+from .timeutils import utcnow
+
+USER_ROLES = ("employer", "recruiter", "candidate", "admin")  # admin issued only by A9 tooling
 
 
 class User(Base):
-    """Employer, Recruiter, or Candidate account."""
+    """Employer, Recruiter, or Candidate account (admin arrives in module A9)."""
 
     __tablename__ = "users"
+    __table_args__ = (CheckConstraint(f"role IN {USER_ROLES}", name="ck_users_role"),)
 
     id: Mapped[int] = mapped_column(primary_key=True)
     email: Mapped[str] = mapped_column(String(255), unique=True, index=True)
     password_hash: Mapped[str] = mapped_column(String(255))
-    role: Mapped[str] = mapped_column(String(20), default="employer")  # employer | recruiter | candidate
+    role: Mapped[str] = mapped_column(String(20), default="employer")
     is_verified: Mapped[bool] = mapped_column(Boolean, default=False)
     failed_login_attempts: Mapped[int] = mapped_column(Integer, default=0)
     locked_until: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    # Bumped on password reset/change: access tokens carry this as `ver`, so a
+    # bump instantly invalidates every outstanding session (A1).
+    token_version: Mapped[int] = mapped_column(Integer, default=0)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
 
     company: Mapped["Company | None"] = relationship(back_populates="owner", uselist=False)
     agency: Mapped["Agency | None"] = relationship(back_populates="owner", uselist=False)
+
+
+class AuthToken(Base):
+    """Single-use, expiring tokens: email verification, password reset, and
+    refresh tokens (rotated on every use). Only the SHA-256 of the raw token
+    is stored."""
+
+    __tablename__ = "auth_tokens"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), index=True)
+    purpose: Mapped[str] = mapped_column(String(20))  # verify_email | password_reset | refresh
+    token_hash: Mapped[str] = mapped_column(String(64), index=True)
+    expires_at: Mapped[datetime] = mapped_column(DateTime)
+    used_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
+
+    user: Mapped[User] = relationship()
 
 
 class Company(Base):
@@ -72,7 +97,7 @@ class Vacancy(Base):
     marketplace_enabled: Mapped[bool] = mapped_column(Boolean, default=True)
     access_mode: Mapped[str] = mapped_column(String(30), default="Open Marketplace")
     status: Mapped[str] = mapped_column(String(20), default="Active")  # Draft | Active | Paused | Closed | Filled
-    posted_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    posted_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
 
     company: Mapped[Company] = relationship(back_populates="vacancies")
     screening_questions: Mapped[list["ScreeningQuestion"]] = relationship(back_populates="vacancy")
@@ -111,7 +136,7 @@ class Candidate(Base):
     skills: Mapped[str] = mapped_column(Text, default="")
     source: Mapped[str] = mapped_column(String(30), default="Direct")
     match_pct: Mapped[int] = mapped_column(Integer, default=0)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
 
 
 class Application(Base):
@@ -124,7 +149,7 @@ class Application(Base):
     candidate_id: Mapped[int] = mapped_column(ForeignKey("candidates.id"))
     stage: Mapped[str] = mapped_column(String(30), default="Applied")
     status: Mapped[str] = mapped_column(String(30), default="Under Review")  # candidate-facing simplified status
-    applied_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    applied_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
 
     vacancy: Mapped[Vacancy] = relationship(back_populates="applications")
     candidate: Mapped[Candidate] = relationship()
@@ -143,7 +168,7 @@ class Submission(Base):
     notes: Mapped[str] = mapped_column(Text, default="")
     consent_confirmed: Mapped[bool] = mapped_column(Boolean, default=False)
     status: Mapped[str] = mapped_column(String(30), default="Pending")  # Pending|Interview|Offer|Placed|Rejected
-    submitted_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    submitted_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
 
     vacancy: Mapped[Vacancy] = relationship(back_populates="submissions")
     candidate: Mapped[Candidate] = relationship()
@@ -163,7 +188,7 @@ class Offer(Base):
     contract_type: Mapped[str] = mapped_column(String(30), default="Permanent")
     status: Mapped[str] = mapped_column(String(30), default="Pending")  # Pending|Accepted|Rejected|Countered|Expired|Withdrawn
     counter_message: Mapped[str] = mapped_column(Text, default="")
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
 
     vacancy: Mapped[Vacancy] = relationship()
     candidate: Mapped[Candidate] = relationship()
@@ -203,4 +228,4 @@ class Notification(Base):
     title: Mapped[str] = mapped_column(String(255))
     body: Mapped[str] = mapped_column(Text, default="")
     is_read: Mapped[bool] = mapped_column(Boolean, default=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)

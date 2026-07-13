@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from ..database import get_db
 from ..deps import require_role
 from ..models import Company, Invoice, Submission, User
+from ..pagination import Page, PageParams, paginate
 from ..schemas import InvoiceOut
 from ..security import get_current_user
 
@@ -14,12 +15,17 @@ router = APIRouter(tags=["invoices"])
 PAYOUT_MINIMUM = 500  # PRD: minimum payout threshold (£)
 
 
-@router.get("/api/invoices", response_model=list[InvoiceOut])
-def list_invoices(current: User = Depends(require_role("employer")), db: Session = Depends(get_db)):
+@router.get("/api/invoices", response_model=Page[InvoiceOut])
+def list_invoices(
+    params: PageParams = Depends(),
+    current: User = Depends(require_role("employer")),
+    db: Session = Depends(get_db),
+):
     company = db.scalar(select(Company).where(Company.owner_id == current.id))
     if company is None:
-        return []
-    return db.scalars(select(Invoice).where(Invoice.company_id == company.id)).all()
+        return Page(items=[], total=0, page=params.page, size=params.size)
+    rows, total = paginate(db, select(Invoice).where(Invoice.company_id == company.id), params)
+    return Page(items=rows, total=total, page=params.page, size=params.size)
 
 
 class EarningsSummary(BaseModel):
